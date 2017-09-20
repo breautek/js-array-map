@@ -146,7 +146,7 @@ SOFTWARE.
 		},
 
 		length: function() {
-			return Math.abs(this._lowerBound - this._upperBound);
+			return Math.abs(this._lowerBound - this._upperBound) + 1;
 		},
 
 		set: function(index, item) {
