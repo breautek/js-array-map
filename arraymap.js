@@ -43,20 +43,20 @@ SOFTWARE.
 		hasPrevious : function() {
 			var cursor = this._cursor;
 			return cursor >= 0 && cursor < this._data.length;
-		}
+		},
 
 		next : function() {
 			this._cursor++;
 			return this._data[this._cursor];
-		}
+		},
 
 		previous : function() {
 			this._data[this._cursor--];
-		}
+		},
 
 		iterate : function(fn) {
 			this._data.forEach(fn);
-		}
+		},
 
 		hasReachedEnd() {
 			return this._cursor > this._data.length;
@@ -147,7 +147,7 @@ SOFTWARE.
 
 		length: function() {
 			return Math.abs(this._lowerBound - this._upperBound);
-		}
+		},
 
 		set: function(index, item) {
 			index = parseInt(index);
