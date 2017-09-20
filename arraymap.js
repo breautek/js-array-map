@@ -190,7 +190,7 @@ SOFTWARE.
 		}
 	};
 
-	window[namespace] = ArrayMap;
-	window[namespace] = Iterator;
+	window[namespace].ArrayMap = ArrayMap;
+	window[namespace].Iterator = Iterator;
 })('bt');
 
