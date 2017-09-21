@@ -97,11 +97,22 @@ SOFTWARE.
 			return this._upperBound;
 		},
 
-		toArray : function() {
+		toArray : function(recursive) {
 			var arr = [];
 
 			for (var i = this.getLowerBound(); i <= this.getUpperBound(); i++) {
-				arr.push(this.get(i));
+				if (recursive) {
+					var item = this.get(i);
+					if (item instanceof ArrayMap) {
+						arr.push(item.toArray(recursive));
+					}
+					else {
+						arr.push(item);
+					}
+				}
+				else {
+					arr.push(this.get(i));	
+				}
 			}
 
 			return arr;
