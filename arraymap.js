@@ -105,7 +105,7 @@ SOFTWARE.
 			}
 
 			return arr;
-		}
+		},
 
 		first : function() {
 			var iterator = this.iterator();
