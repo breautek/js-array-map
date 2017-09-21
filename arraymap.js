@@ -73,21 +73,11 @@ SOFTWARE.
 		constructor : ArrayMap,
 
 		iterator : function() {
-			var arr = [];
-			for (var i = this.getLowerBound(); i <= this.getUpperBound(); i++) {
-				arr.push(this._data[i]);
-			}
-
-			return new Iterator(arr);
+			return new Iterator(this.toArray());
 		},
 
 		reverseIterator : function() {
-			var arr = [];
-			for (var i = this.getLowerBound(); i <= this.getUpperBound(); i++) {
-				arr.push(this._data[i]);
-			}
-
-			return new Iterator(arr.reverse());	
+			return new Iterator(this.toArray().reverse());	
 		},
 
 		iterate : function(fn) {
@@ -106,6 +96,16 @@ SOFTWARE.
 		getUpperBound : function() {
 			return this._upperBound;
 		},
+
+		toArray : function() {
+			var arr = [];
+
+			for (var i = this.getLowerBound(); i <= this.getUpperBound(); i++) {
+				arr.push(this.get(i));
+			}
+
+			return arr;
+		}
 
 		first : function() {
 			var iterator = this.iterator();
