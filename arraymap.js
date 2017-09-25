@@ -58,15 +58,19 @@ SOFTWARE.
 			this._data.forEach(fn);
 		},
 
-		hasReachedEnd() {
+		reset: function() {
+			this._cursor = -1;
+		},
+
+		hasReachedEnd: function() {
 			return this._cursor > this._data.length;
 		}
 	};
 
-	var ArrayMap = function() {
+	var ArrayMap = function(lowerBound, upperBound) {
 		this._data = {};
-		this._lowerBound = 0;
-		this._upperBound = 0;
+		this._lowerBound = lowerBound || 0;
+		this._upperBound = upperBound || 0;
 	};
 
 	ArrayMap.prototype = {
@@ -80,12 +84,15 @@ SOFTWARE.
 			return new Iterator(this.toArray().reverse());	
 		},
 
-		iterate : function(fn) {
+		iterate : function(fn, recursive) {
 			if (!fn) return null;
 
-			for (var i = this.getLowerBound(); i < this.getUpperBound(); i++) {
+			for (var i = this.getLowerBound(); i <= this.getUpperBound(); i++) {
 				var item = this.get(i);
-				fn(item, i);
+				fn(item, i, this);
+				if (recursive && item instanceof ArrayMap) {
+					item.iterate(fn, recursive);
+				}
 			}
 		},
 
@@ -166,15 +173,18 @@ SOFTWARE.
 				throw new Error('Index must be an integer.');
 			}
 
-			if (index < this._lowerBound) {
-				this._lowerBound = index;
-			}
+			// if (index < this._lowerBound) {
+			// 	this._lowerBound = index;
+			// }
 
-			if (index > this._upperBound) {
-				this._upperBound = index;
-			}
+			// if (index > this._upperBound) {
+			// 	this._upperBound = index;
+			// }
 
 			this._data[index] = item;
+
+			this._syncBoundaries();
+
 			return this;
 		},
 
@@ -198,6 +208,27 @@ SOFTWARE.
 			delete this._data[this._upperBound];
 			this._upperBound--;
 			return data;
+		},
+
+		_syncBoundaries : function() {
+			var keys = Object.keys(this._data);
+
+			var lowest = Infinity, highest = -Infinity;
+
+			for (var i = 0; i < keys.length; i++) {
+				var index = parseInt(keys[i]);
+
+				if (index < lowest) {
+					lowest = index;
+				}
+
+				if (index > highest) {
+					highest = index;
+				}
+			}
+
+			this._lowerBound = lowest;
+			this._upperBound = highest;
 		}
 	};
 
